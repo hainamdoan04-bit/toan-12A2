@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floral Elegance - Cửa Hàng Hoa Tươi Cao Cấp</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#FDF2F4',
+                            rose: '#E88D9C',
+                            darkrose: '#C85A6E',
+                            sage: '#E3ECE4',
+                            green: '#4A6B53',
+                            cream: '#FAF8F5',
+                            charcoal: '#2D3748'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #FDF2F4;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E88D9C;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-brand-cream text-brand-charcoal font-sans flex flex-col min-h-screen custom-scrollbar selection:bg-brand-rose selection:text-white">
+
+    <!-- Sticky Header Navigation -->
+    <header class="sticky top-0 z-40 glass-header border-b border-pink-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer flex items-center gap-2" onclick="navigateTo('home')">
+                    <span class="text-3xl text-brand-darkrose"><i class="fa-solid font-serif">✿</i></span>
+                    <div>
+                        <span class="font-serif text-2xl font-bold tracking-wide text-brand-darkrose block leading-tight">Floral Elegance</span>
+                        <span class="text-[10px] tracking-widest uppercase text-brand-green font-medium block">Trọn Vẹn Yêu Thương</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <button onclick="navigateTo('home')" id="nav-home" class="nav-link font-medium text-brand-darkrose hover:text-brand-darkrose transition duration-150 py-2 border-b-2 border-brand-darkrose">Trang Chủ</button>
+                    <button onclick="navigateTo('products')" id="nav-products" class="nav-link font-medium text-gray-600 hover:text-brand-darkrose transition duration-150 py-2 border-b-2 border-transparent">Sản Phẩm</button>
+                    <button onclick="navigateTo('about')" id="nav-about" class="nav-link font-medium text-gray-600 hover:text-brand-darkrose transition duration-150 py-2 border-b-2 border-transparent">Giới Thiệu</button>
+                    <button onclick="navigateTo('blog')" id="nav-blog" class="nav-link font-medium text-gray-600 hover:text-brand-darkrose transition duration-150 py-2 border-b-2 border-transparent">Góc Hoa & Tips</button>
+                    <button onclick="navigateTo('contact')" id="nav-contact" class="nav-link font-medium text-gray-600 hover:text-brand-darkrose transition duration-150 py-2 border-b-2 border-transparent">Liên Hệ</button>
+                </nav>
+
+                <!-- Actions: Search, Cart & Mobile Menu Button -->
+                <div class="flex items-center space-x-5">
+                    <!-- Quick Search Input -->
+                    <div class="relative hidden sm:block w-48 lg:w-64">
+                        <input type="text" id="global-search-input" onkeyup="handleGlobalSearch(event)" placeholder="Tìm kiếm bó hoa..." class="w-full bg-white border border-pink-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-brand-rose focus:ring-1 focus:ring-brand-rose shadow-inner">
+                        <button onclick="executeGlobalSearch()" class="absolute right-3 top-2.5 text-gray-400 hover:text-brand-darkrose">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+
+                    <!-- Cart Toggle Button -->
+                    <button onclick="toggleCartDrawer()" class="relative p-2.5 text-gray-700 hover:text-brand-darkrose bg-white hover:bg-brand-pink rounded-full transition shadow-sm border border-pink-100">
+                        <i class="fa-solid fa-basket-shopping text-lg"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-darkrose text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Trigger -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600 hover:text-brand-darkrose focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-pink-100 px-4 pt-2 pb-6 space-y-3">
+            <div class="relative mb-3">
+                <input type="text" id="mobile-search-input" onkeyup="handleGlobalSearch(event)" placeholder="Tìm kiếm bó hoa..." class="w-full bg-brand-cream border border-pink-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none">
+                <button onclick="executeGlobalSearch()" class="absolute right-3 top-2.5 text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <button onclick="navigateTo('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-medium text-brand-darkrose bg-brand-pink">Trang Chủ</button>
+            <button onclick="navigateTo('products'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-medium text-gray-700 hover:bg-brand-pink">Sản Phẩm</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-medium text-gray-700 hover:bg-brand-pink">Giới Thiệu</button>
+            <button onclick="navigateTo('blog'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-medium text-gray-700 hover:bg-brand-pink">Góc Hoa & Tips</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-medium text-gray-700 hover:bg-brand-pink">Liên Hệ</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER FOR 5 PAGES -->
+    <main class="flex-grow">
+        
+        <!-- 1. TRANG CHỦ (HOME PAGE) -->
+        <section id="page-home" class="page-section active">
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-r from-pink-50 via-brand-pink to-brand-sage py-16 md:py-24 overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="space-y-6 text-center md:text-left">
+                            <span class="inline-block px-4 py-1.5 rounded-full bg-white/80 text-brand-darkrose font-semibold text-xs tracking-wider uppercase border border-pink-200 shadow-sm">🌿 Hoa Tươi Tự Nhiên 100% Giao Trong 2 Giờ</span>
+                            <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                                Gửi Trao Cảm Xúc Qua <span class="text-brand-darkrose italic">Từng Nhành Hoa</span>
+                            </h1>
+                            <p class="text-gray-600 text-lg leading-relaxed max-w-xl">
+                                Nâng tầm từng khoảnh khắc đáng nhớ với những thiết kế hoa tươi tinh tế, nghệ thuật và tràn đầy thông điệp yêu thương từ Floral Elegance.
+                            </p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-2">
+                                <button onclick="navigateTo('products')" class="w-full sm:w-auto px-8 py-4 bg-brand-darkrose text-white font-medium rounded-full shadow-lg hover:bg-pink-700 transition duration-300 transform hover:-translate-y-0.5">
+                                    Khám Phá Bộ Sưu Tập <i class="fa-solid fa-arrow-right ml-2"></i>
+                                </button>
+                                <button onclick="navigateTo('contact')" class="w-full sm:w-auto px-8 py-4 bg-white text-brand-green font-medium rounded-full border border-green-200 hover:bg-emerald-50 transition duration-300">
+                                    Đặt Thiết Kế Theo Yêu Cầu
+                                </button>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="relative mx-auto max-w-md lg:max-w-none">
+                                <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=800&q=80" alt="Bó hoa cao cấp" class="rounded-3xl shadow-2xl object-cover h-[450px] w-full border-4 border-white">
+                                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4 border border-pink-100 hidden sm:flex">
+                                    <div class="w-12 h-12 bg-pink-100 text-brand-darkrose rounded-full flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-award"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800 text-sm">Chất Lượng Thượng Hạng</p>
+                                        <p class="text-xs text-gray-500">Tuyển chọn nghiêm ngặt mỗi sáng</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outstanding Categories -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Danh Mục Sản Phẩm</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Chọn Hoa Theo Dịp Lễ</h2>
+                    <div class="w-16 h-1 bg-brand-rose mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div onclick="filterCategoryAndNavigate('birthday')" class="group cursor-pointer bg-white rounded-2xl p-6 text-center border border-pink-100 hover:border-brand-rose transition shadow-sm hover:shadow-md">
+                        <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition text-brand-darkrose text-2xl">
+                            <i class="fa-solid fa-cake-candles"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-gray-800 text-lg group-hover:text-brand-darkrose transition">Hoa Sinh Nhật</h3>
+                        <p class="text-xs text-gray-500 mt-1">32+ mẫu thiết kế</p>
+                    </div>
+
+                    <div onclick="filterCategoryAndNavigate('wedding')" class="group cursor-pointer bg-white rounded-2xl p-6 text-center border border-pink-100 hover:border-brand-rose transition shadow-sm hover:shadow-md">
+                        <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition text-brand-darkrose text-2xl">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-gray-800 text-lg group-hover:text-brand-darkrose transition">Hoa Cưới & Tình Yêu</h3>
+                        <p class="text-xs text-gray-500 mt-1">24+ mẫu lãng mạn</p>
+                    </div>
+
+                    <div onclick="filterCategoryAndNavigate('opening')" class="group cursor-pointer bg-white rounded-2xl p-6 text-center border border-pink-100 hover:border-brand-rose transition shadow-sm hover:shadow-md">
+                        <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition text-brand-darkrose text-2xl">
+                            <i class="fa-solid fa-champagne-glasses"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-gray-800 text-lg group-hover:text-brand-darkrose transition">Hoa Khai Trương</h3>
+                        <p class="text-xs text-gray-500 mt-1">18+ lẵng hoa sang trọng</p>
+                    </div>
+
+                    <div onclick="filterCategoryAndNavigate('event')" class="group cursor-pointer bg-white rounded-2xl p-6 text-center border border-pink-100 hover:border-brand-rose transition shadow-sm hover:shadow-md">
+                        <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition text-brand-darkrose text-2xl">
+                            <i class="fa-solid fa-gift"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-gray-800 text-lg group-hover:text-brand-darkrose transition">Hoa Sự Kiện & Lễ</h3>
+                        <p class="text-xs text-gray-500 mt-1">20+ tinh tế & lịch sự</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Sellers Section -->
+            <div class="bg-white py-16 border-y border-pink-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                        <div>
+                            <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Sản Phẩm Yêu Thích</span>
+                            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-1">Bó Hoa Bán Chạy Nhất</h2>
+                        </div>
+                        <button onclick="navigateTo('products')" class="mt-4 md:mt-0 text-brand-darkrose font-semibold hover:underline flex items-center gap-2">
+                            Xem tất cả sản phẩm <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Home Best Seller Grid -->
+                    <div id="home-bestseller-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Populated by JS dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Choose Us -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-brand-green font-semibold text-sm uppercase tracking-widest">Giá Trị Cốt Lõi</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Tại Sao Chọn Floral Elegance?</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-brand-pink/50 p-8 rounded-3xl border border-pink-100 text-center hover:bg-brand-pink transition">
+                        <div class="w-16 h-16 bg-white text-brand-darkrose rounded-2xl shadow-md flex items-center justify-center mx-auto mb-6 text-2xl">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-gray-900 mb-3">Giao Hoa Hỏa Tốc 2H</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Cam kết giao hoa đúng giờ tận tay người nhận tại nội thành. Đảm bảo dáng hoa nguyên vẹn như vừa cắm.</p>
+                    </div>
+
+                    <div class="bg-brand-sage/40 p-8 rounded-3xl border border-green-100 text-center hover:bg-brand-sage/70 transition">
+                        <div class="w-16 h-16 bg-white text-brand-green rounded-2xl shadow-md flex items-center justify-center mx-auto mb-6 text-2xl">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-gray-900 mb-3">Hoa Tươi 100% Trong Ngày</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Hoa được chọn lọc kỹ càng từ các trang trại hoa Đà Lạt & nhập khẩu cao cấp, độ tươi kéo dài trên 5-7 ngày.</p>
+                    </div>
+
+                    <div class="bg-pink-50 p-8 rounded-3xl border border-pink-100 text-center hover:bg-pink-100/50 transition">
+                        <div class="w-16 h-16 bg-white text-brand-darkrose rounded-2xl shadow-md flex items-center justify-center mx-auto mb-6 text-2xl">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-gray-900 mb-3">Thiết Kế Theo Yêu Cầu</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Đội ngũ Florian chuyên nghiệp sẵn sàng hiện thực hóa ý tưởng và thông điệp riêng của bạn qua từng tone màu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Testimonials -->
+            <div class="bg-brand-pink/30 py-16 border-t border-pink-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-xl mx-auto mb-12">
+                        <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Ý Kiến Khách Hàng</span>
+                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-2">Trải Nghiệm Đáng Nhớ</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-pink-100 flex flex-col justify-between">
+                            <p class="text-gray-600 italic text-sm mb-6">"Mình đặt bó hoa tặng sinh nhật người yêu lúc gấp, chỉ trong 1.5h hoa đã tới nơi. Bó hoa đẹp lung linh hơn cả hình trên web!"</p>
+                            <div class="flex items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-800">Phương Thảo</h4>
+                                    <div class="text-amber-400 text-xs">★★★★★</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-pink-100 flex flex-col justify-between">
+                            <p class="text-gray-600 italic text-sm mb-6">"Dịch vụ cắm hoa cưới của shop tuyệt vời! Hoa tươi lâu, cách phối màu pastel cực kỳ sang trọng và đúng ý hai vợ chồng."</p>
+                            <div class="flex items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-800">Minh Nhật</h4>
+                                    <div class="text-amber-400 text-xs">★★★★★</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-pink-100 flex flex-col justify-between">
+                            <p class="text-gray-600 italic text-sm mb-6">"Nhân viên tư vấn siêu nhiệt tình. Hoa tươi và giữ được hơn 6 ngày. Rất hài lòng và chắc chắn sẽ quay lại!"</p>
+                            <div class="flex items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-800">Hà My</h4>
+                                    <div class="text-amber-400 text-xs">★★★★★</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TRANG SẢN PHẨM (SHOP / PRODUCTS PAGE) -->
+        <section id="page-products" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <!-- Page Title -->
+                <div class="mb-8">
+                    <h1 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900">Danh Sách Hoa Tươi</h1>
+                    <p class="text-gray-500 text-sm mt-1">Tìm thấy những bó hoa hoàn hảo cho mọi thông điệp yêu thương của bạn</p>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Filters Sidebar -->
+                    <aside class="w-full lg:w-64 space-y-6 flex-shrink-0">
+                        <div class="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-6">
+                            <!-- Category Filter -->
+                            <div>
+                                <h3 class="font-serif font-bold text-gray-800 text-lg mb-3 pb-2 border-b border-pink-100">Dịp Lễ</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="radio" name="cat-filter" value="all" checked onchange="filterProducts()" class="accent-brand-darkrose"> Tất cả dịp
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="radio" name="cat-filter" value="birthday" onchange="filterProducts()" class="accent-brand-darkrose"> Hoa Sinh Nhật
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="radio" name="cat-filter" value="wedding" onchange="filterProducts()" class="accent-brand-darkrose"> Hoa Cưới / Tình Yêu
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="radio" name="cat-filter" value="opening" onchange="filterProducts()" class="accent-brand-darkrose"> Hoa Khai Trương
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="radio" name="cat-filter" value="event" onchange="filterProducts()" class="accent-brand-darkrose"> Hoa Sự Kiện
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Flower Type Filter -->
+                            <div>
+                                <h3 class="font-serif font-bold text-gray-800 text-lg mb-3 pb-2 border-b border-pink-100">Loại Hoa Chi Cánh</h3>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="checkbox" value="rose" onchange="filterProducts()" class="type-checkbox accent-brand-darkrose rounded"> Hoa Hồng
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="checkbox" value="tulip" onchange="filterProducts()" class="type-checkbox accent-brand-darkrose rounded"> Hoa Tulip
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="checkbox" value="baby" onchange="filterProducts()" class="type-checkbox accent-brand-darkrose rounded"> Hoa Baby / Cẩm Tú Cầu
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-brand-darkrose">
+                                        <input type="checkbox" value="sunflower" onchange="filterProducts()" class="type-checkbox accent-brand-darkrose rounded"> Hoa Hướng Dương
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Price Range Filter -->
+                            <div>
+                                <h3 class="font-serif font-bold text-gray-800 text-lg mb-3 pb-2 border-b border-pink-100">Mức Giá (VNĐ)</h3>
+                                <select id="price-range-select" onchange="filterProducts()" class="w-full bg-brand-cream border border-pink-200 rounded-lg p-2 text-sm focus:outline-none">
+                                    <option value="all">Tất cả mức giá</option>
+                                    <option value="under500">Dưới 500.000đ</option>
+                                    <option value="500to1000">500.000đ - 1.000.000đ</option>
+                                    <option value="over1000">Trên 1.000.000đ</option>
+                                </select>
+                            </div>
+
+                            <!-- Reset Button -->
+                            <button onclick="resetFilters()" class="w-full py-2 bg-gray-100 text-gray-600 rounded-xl text-xs font-semibold hover:bg-gray-200 transition">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Xóa Bộ Lọc
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- Main Products Display Grid -->
+                    <main class="flex-grow">
+                        <!-- Toolbar Controls -->
+                        <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="text-sm text-gray-500">
+                                Hiển thị <span id="product-count" class="font-bold text-brand-darkrose">0</span> mẫu hoa
+                            </div>
+                            <div class="flex items-center gap-3 w-full sm:w-auto">
+                                <label class="text-sm text-gray-600 whitespace-nowrap">Sắp xếp:</label>
+                                <select id="sort-select" onchange="filterProducts()" class="bg-brand-cream border border-pink-200 rounded-lg p-2 text-sm focus:outline-none w-full sm:w-auto">
+                                    <option value="default">Mặc định</option>
+                                    <option value="price-asc">Giá: Thấp đến Cao</option>
+                                    <option value="price-desc">Giá: Cao đến Thấp</option>
+                                    <option value="name-asc">Tên: A - Z</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Product Cards Container -->
+                        <div id="products-catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <!-- Empty State if no product matched -->
+                        <div id="no-products-found" class="hidden text-center py-16 bg-white rounded-2xl border border-pink-100">
+                            <i class="fa-solid fa-seedling text-5xl text-pink-200 mb-4"></i>
+                            <h3 class="font-serif text-xl font-bold text-gray-700">Không tìm thấy mẫu hoa phù hợp</h3>
+                            <p class="text-gray-500 text-sm mt-1">Vui lòng thử điều chỉnh lại bộ lọc hoặc từ khóa tìm kiếm</p>
+                            <button onclick="resetFilters()" class="mt-4 px-6 py-2 bg-brand-darkrose text-white text-sm rounded-full">Xóa bộ lọc</button>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. TRANG GIỚI THIỆU (ABOUT US PAGE) -->
+        <section id="page-about" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+                <!-- Story Hero -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Câu Chuyện Thương Hiệu</span>
+                        <h1 class="font-serif text-3xl sm:text-5xl font-bold text-gray-900 leading-tight">Nuôi Dưỡng Tình Yêu Từ Những Cánh Hoa Tươi</h1>
+                        <p class="text-gray-600 leading-relaxed">
+                            Thành lập từ năm 2018, <strong>Floral Elegance</strong> bắt đầu từ một cửa hàng hoa nhỏ nằm trên góc phố cổ yên bình. Với niềm đam mê sâu sắc dành cho vẻ đẹp tự nhiên, chúng tôi luôn tin rằng hoa không đơn thuần là món quà, mà là nhịp cầu gắn kết cảm xúc chân thành giữa con người với con người.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            Mỗi bó hoa tại cửa hàng đều được tạo nên từ bàn tay khéo léo của những nghệ nhân tâm huyết, chăm chút tỉ mỉ từ khâu chọn hoa sáng sớm cho đến lớp giấy gói tinh tế cuối cùng.
+                        </p>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80" alt="Cửa hàng Floral Elegance" class="rounded-3xl shadow-xl object-cover h-[400px] w-full">
+                    </div>
+                </div>
+
+                <!-- Mission & Vision -->
+                <div class="bg-white p-10 rounded-3xl border border-pink-100 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4 border-b md:border-b-0 md:border-r border-pink-100 pb-6 md:pb-0 md:pr-8">
+                        <div class="w-12 h-12 bg-pink-100 text-brand-darkrose rounded-2xl flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-gray-900">Sứ Mệnh</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Mang đến cho khách hàng trải nghiệm hoa tươi đẳng cấp chuẩn nghệ thuật, nâng tầm chất lượng cuộc sống và giúp mỗi thông điệp yêu thương được truyền tải trọn vẹn nhất.
+                        </p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-emerald-100 text-brand-green rounded-2xl flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h3 class="font-serif text-2xl font-bold text-gray-900">Tầm Nhìn</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Trở thành thương hiệu hoa tươi thiết kế hàng đầu, lan tỏa phong cách sống tinh tế và phát triển mô hình hoa tươi bền vững, thân thiện với môi trường.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Florist Team Section -->
+                <div>
+                    <div class="text-center max-w-xl mx-auto mb-12">
+                        <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Nghệ Nhân Đội Ngũ</span>
+                        <h2 class="font-serif text-3xl font-bold text-gray-900 mt-2">Bàn Tay Tạo Nên Nghệ Thuật</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                        <div class="bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" alt="Florist Anna" class="w-32 h-32 rounded-full mx-auto object-cover mb-4 border-2 border-brand-rose">
+                            <h3 class="font-serif font-bold text-xl text-gray-800">Trần Thanh Vân</h3>
+                            <p class="text-xs text-brand-darkrose font-semibold uppercase mt-1">Trưởng Bộc Cắm Hoa</p>
+                            <p class="text-gray-500 text-sm mt-3">10+ năm kinh nghiệm trong nghệ thuật cắm hoa Châu Âu hiện đại.</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80" alt="Florist Mai" class="w-32 h-32 rounded-full mx-auto object-cover mb-4 border-2 border-brand-rose">
+                            <h3 class="font-serif font-bold text-xl text-gray-800">Lê Hoàng Mai</h3>
+                            <p class="text-xs text-brand-darkrose font-semibold uppercase mt-1">Chuyên Viên Thiết Kế Hoa Cưới</p>
+                            <p class="text-gray-500 text-sm mt-3">Sáng tạo không ngừng với phong cách phối màu Pastel tinh tế.</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80" alt="Florist Minh" class="w-32 h-32 rounded-full mx-auto object-cover mb-4 border-2 border-brand-rose">
+                            <h3 class="font-serif font-bold text-xl text-gray-800">Nguyễn Quốc Minh</h3>
+                            <p class="text-xs text-brand-darkrose font-semibold uppercase mt-1">Nghệ Nhân Hoa Sự Kiện</p>
+                            <p class="text-gray-500 text-sm mt-3">Kinh nghiệm thực hiện 500+ dự án hoa sự kiện & tiệc cưới lớn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TRANG BLOG / TIN TỨC (BLOG & TIPS PAGE) -->
+        <section id="page-blog" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Chia Sẻ & Cảm Hứng</span>
+                    <h1 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Góc Hoa & Bí Quyết</h1>
+                    <p class="text-gray-500 text-sm mt-2">Khám phá ý nghĩa các loài hoa và những mẹo nhỏ chăm sóc hoa lâu tươi</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Article 1 -->
+                    <article class="bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-md transition">
+                        <img src="https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=600&q=80" alt="Mẹo giữ hoa tươi" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <div class="text-xs text-brand-darkrose font-semibold uppercase">Mẹo Chăm Sóc • 25/10/2026</div>
+                            <h3 class="font-serif font-bold text-lg text-gray-800 hover:text-brand-darkrose cursor-pointer">5 Mẹo Đơn Giản Giúp Bó Hoa Tươi Lâu Suốt 1 Tuần</h3>
+                            <p class="text-gray-600 text-sm line-clamp-3">Cắt gốc chéo 45度, thay nước mỗi ngày và thêm một chút đường là những bí quyết siêu dễ giúp bình hoa của bạn luôn tràn đầy sức sống.</p>
+                            <button class="text-brand-darkrose font-medium text-sm hover:underline flex items-center gap-1 pt-2">
+                                Đọc tiếp <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-md transition">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Ý nghĩa hoa hồng" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <div class="text-xs text-brand-darkrose font-semibold uppercase">Ý Nghĩa Loài Hoa • 18/10/2026</div>
+                            <h3 class="font-serif font-bold text-lg text-gray-800 hover:text-brand-darkrose cursor-pointer">Giải Mã Ý Nghĩa Mùa Hoa Tulip Theo Từng Gam Màu</h3>
+                            <p class="text-gray-600 text-sm line-clamp-3">Tulip đỏ tượng trưng cho tình yêu hoàn hảo, tulip vàng mang năng lượng tích cực. Hãy cùng tìm hiểu thông điệp bí ẩn sau loài hoa này.</p>
+                            <button class="text-brand-darkrose font-medium text-sm hover:underline flex items-center gap-1 pt-2">
+                                Đọc tiếp <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-md transition">
+                        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80" alt="Chọn hoa cưới" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <div class="text-xs text-brand-darkrose font-semibold uppercase">Xu Hướng Cưới • 10/10/2026</div>
+                            <h3 class="font-serif font-bold text-lg text-gray-800 hover:text-brand-darkrose cursor-pointer">Xu Hướng Hoa Cưới Tone Pastel Sang Trọng Năm 2026</h3>
+                            <p class="text-gray-600 text-sm line-clamp-3">Gợi ý các tone màu hoa cầm tay cô dâu được ưa chuộng nhất mùa thu đông, mang lại vẻ thanh lịch và thanh thoát cho lễ cưới.</p>
+                            <button class="text-brand-darkrose font-medium text-sm hover:underline flex items-center gap-1 pt-2">
+                                Đọc tiếp <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TRANG LIÊN HỆ (CONTACT PAGE) -->
+        <section id="page-contact" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-darkrose font-semibold text-sm uppercase tracking-widest">Liên Hệ Tức Thời</span>
+                    <h1 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-2">Kết Nối Với Floral Elegance</h1>
+                    <p class="text-gray-500 text-sm mt-2">Chúng tôi luôn sẵn sàng lắng nghe và tư vấn mẫu hoa ưng ý nhất cho bạn</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div class="bg-white p-8 rounded-3xl border border-pink-100 shadow-sm">
+                        <h2 class="font-serif font-bold text-2xl text-gray-800 mb-6">Gửi Yêu Cầu Cho Cửa Hàng</h2>
+                        <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên *</label>
+                                <input type="text" required placeholder="Nguyễn Văn A" class="w-full bg-brand-cream border border-pink-200 rounded-xl p-3 text-sm focus:outline-none focus:border-brand-rose">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại *</label>
+                                    <input type="tel" required placeholder="0912 345 678" class="w-full bg-brand-cream border border-pink-200 rounded-xl p-3 text-sm focus:outline-none focus:border-brand-rose">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                    <input type="email" placeholder="example@gmail.com" class="w-full bg-brand-cream border border-pink-200 rounded-xl p-3 text-sm focus:outline-none focus:border-brand-rose">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Dịp / Yêu cầu đặc biệt</label>
+                                <select class="w-full bg-brand-cream border border-pink-200 rounded-xl p-3 text-sm focus:outline-none">
+                                    <option>Đặt hoa sinh nhật</option>
+                                    <option>Tư vấn hoa cưới</option>
+                                    <option>Đặt hoa sự kiện / doanh nghiệp</option>
+                                    <option>Ý kiến đóng góp khác</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Lời nhắn *</label>
+                                <textarea rows="4" required placeholder="Hãy mô tả chi tiết mẫu hoa hoặc ghi chú giao hàng bạn mong muốn..." class="w-full bg-brand-cream border border-pink-200 rounded-xl p-3 text-sm focus:outline-none focus:border-brand-rose"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3.5 bg-brand-darkrose text-white font-medium rounded-xl hover:bg-pink-700 transition shadow-md">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Gửi Tin Nhắn
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Store Info & Map -->
+                    <div class="space-y-6 flex flex-col justify-between">
+                        <div class="bg-brand-pink/50 p-8 rounded-3xl border border-pink-100 space-y-6">
+                            <h2 class="font-serif font-bold text-2xl text-gray-800">Thông Tin Cửa Hàng</h2>
+                            <div class="space-y-4 text-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-white text-brand-darkrose rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Địa Chỉ Cửa Hàng:</p>
+                                        <p class="text-gray-600">123 Đường Phố Hoa, Quận Hoàn Kiếm, Hà Nội</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-white text-brand-darkrose rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Hotline / Zalo Tư Vấn:</p>
+                                        <p class="text-gray-600">0988 123 456 - (024) 3999 8888</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-white text-brand-darkrose rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Email Hỗ Trợ:</p>
+                                        <p class="text-gray-600">contact@floralelegance.vn</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 bg-white text-brand-darkrose rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800">Giờ Mở Cửa:</p>
+                                        <p class="text-gray-600">07:00 AM - 21:00 PM (Tất cả các ngày trong tuần)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Embedded Visual Map Illustration -->
+                        <div class="bg-white p-4 rounded-3xl border border-pink-100 shadow-sm overflow-hidden h-64 relative">
+                            <iframe title="Store Location Map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.0968141851963!2d105.85017601538526!3d21.028811893152733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab953357c995%3A0x6d123b0185901309!2zSOG7kyBIb8OgbiBLaeG6v20!5e0!3m2!1svi!2s!4v1620000000000!5m2!1svi!2s" class="w-full h-full rounded-2xl border-0" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Component -->
+    <footer class="bg-white border-t border-pink-100 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-pink-100">
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl text-brand-darkrose"><i class="fa-solid font-serif">✿</i></span>
+                        <span class="font-serif text-xl font-bold text-brand-darkrose">Floral Elegance</span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Chuyên thiết kế hoa tươi nghệ thuật, hoa sinh nhật, hoa tiệc cưới & sự kiện sang trọng hàng đầu.
+                    </p>
+                    <div class="flex space-x-3 text-brand-darkrose pt-2">
+                        <a href="#" class="w-9 h-9 bg-brand-pink rounded-full flex items-center justify-center hover:bg-brand-rose hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 bg-brand-pink rounded-full flex items-center justify-center hover:bg-brand-rose hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 bg-brand-pink rounded-full flex items-center justify-center hover:bg-brand-rose hover:text-white transition"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation -->
+                <div>
+                    <h4 class="font-serif font-bold text-gray-800 text-base mb-4">Đường Dẫn Nhanh</h4>
+                    <ul class="space-y-2.5 text-sm text-gray-600">
+                        <li><a href="#" onclick="navigateTo('home'); return false;" class="hover:text-brand-darkrose transition">Trang Chủ</a></li>
+                        <li><a href="#" onclick="navigateTo('products'); return false;" class="hover:text-brand-darkrose transition">Bộ Sưu Tập Hoa</a></li>
+                        <li><a href="#" onclick="navigateTo('about'); return false;" class="hover:text-brand-darkrose transition">Giới Thiệu Thương Hiệu</a></li>
+                        <li><a href="#" onclick="navigateTo('blog'); return false;" class="hover:text-brand-darkrose transition">Cảm Hứng & Tips</a></li>
+                        <li><a href="#" onclick="navigateTo('contact'); return false;" class="hover:text-brand-darkrose transition">Liên Hệ Tư Vấn</a></li>
+                    </ul>
+                </div>
+
+                <!-- Product Categories Footer -->
+                <div>
+                    <h4 class="font-serif font-bold text-gray-800 text-base mb-4">Danh Mục Mẫu Hoa</h4>
+                    <ul class="space-y-2.5 text-sm text-gray-600">
+                        <li><a href="#" onclick="filterCategoryAndNavigate('birthday'); return false;" class="hover:text-brand-darkrose transition">Hoa Mừng Sinh Nhật</a></li>
+                        <li><a href="#" onclick="filterCategoryAndNavigate('wedding'); return false;" class="hover:text-brand-darkrose transition">Hoa Cầm Tay Cô Dâu</a></li>
+                        <li><a href="#" onclick="filterCategoryAndNavigate('opening'); return false;" class="hover:text-brand-darkrose transition">Lẵng Hoa Khai Trương</a></li>
+                        <li><a href="#" onclick="filterCategoryAndNavigate('event'); return false;" class="hover:text-brand-darkrose transition">Hoa Tốt Nghiệp & Kỷ Niệm</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter Subscription -->
+                <div>
+                    <h4 class="font-serif font-bold text-gray-800 text-base mb-4">Đăng Ký Nhận Ưu Đãi</h4>
+                    <p class="text-xs text-gray-500 mb-3">Nhận mã giảm giá 10% cho đơn hàng đầu tiên và cập nhật ưu đãi mùa hoa mới nhất.</p>
+                    <form onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
+                        <input type="email" required placeholder="Nhập email của bạn..." class="w-full bg-brand-cream border border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand-rose">
+                        <button type="submit" class="w-full bg-brand-darkrose text-white py-2 rounded-xl text-xs font-semibold hover:bg-pink-700 transition">Đăng Ký Ngay</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-8 text-center text-xs text-gray-400">
+                <p>&copy; 2026 Floral Elegance. Tất cả quyền được bảo lưu. Thiết kế phong cách Pastel Thanh Lịch.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MINI CART DRAWER SIDEBAR -->
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden transition-opacity duration-300"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <!-- Cart Header -->
+        <div class="p-5 border-b border-pink-100 flex items-center justify-between bg-brand-pink/40">
+            <h3 class="font-serif font-bold text-lg text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-basket-shopping text-brand-darkrose"></i> Giỏ Hàng Của Bạn
+            </h3>
+            <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-gray-600 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List Container -->
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-5 space-y-4 custom-scrollbar">
+            <!-- Rendered via JS -->
+        </div>
+
+        <!-- Cart Footer / Summary -->
+        <div class="p-5 border-t border-pink-100 bg-brand-cream space-y-4">
+            <div class="flex justify-between items-center text-base font-bold text-gray-800">
+                <span>Tổng Tiền:</span>
+                <span id="cart-total-price" class="text-brand-darkrose font-serif text-xl">0đ</span>
+            </div>
+            <p class="text-xs text-gray-500">Phí vận chuyển sẽ được tính khi xác nhận địa chỉ giao hoa.</p>
+            <button onclick="checkoutCart()" class="w-full py-3.5 bg-brand-darkrose text-white font-medium rounded-xl hover:bg-pink-700 transition shadow-md flex items-center justify-center gap-2">
+                <i class="fa-solid fa-credit-card"></i> Tiến Hành Thanh Toán
+            </button>
+        </div>
+    </div>
+
+    <!-- QUICK VIEW MODAL FOR PRODUCT DETAILS -->
+    <div id="quickview-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative border border-pink-100 transform transition-all">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-white/80 rounded-full flex items-center justify-center text-gray-500 hover:text-gray-800 shadow">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="quickview-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Dynamically populated product preview -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ----------------------------------------------------
+        // 1. PRODUCT DATABASE (MOCK DATA)
+        // ----------------------------------------------------
+        const productsData = [
+            {
+                id: 'p1',
+                name: 'Bó Hoa Nắng Yêu Thương',
+                category: 'birthday',
+                type: 'sunflower',
+                price: 450000,
+                priceFormatted: '450.000đ',
+                image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=600&q=80',
+                description: 'Bó hoa Hướng Dương rực rỡ kết hợp lá phụ thanh lịch, gửi gắm thông điệp luôn hướng về phía ánh sáng và hy vọng.',
+                isBestseller: true,
+                rating: 5
+            },
+            {
+                id: 'p2',
+                name: 'Thơ Mộng Pink Pastel',
+                category: 'wedding',
+                type: 'rose',
+                price: 780000,
+                priceFormatted: '780.000đ',
+                image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80',
+                description: 'Sự kết hợp tinh tế từ Hoa Hồng Phấn Ecuador và hoa Baby trắng dịu dàng, lựa chọn hoàn hảo cho tình yêu ngọt ngào.',
+                isBestseller: true,
+                rating: 5
+            },
+            {
+                id: 'p3',
+                name: 'Lẵng Hoa Thịnh Vượng',
+                category: 'opening',
+                type: 'rose',
+                price: 1250000,
+                priceFormatted: '1.250.000đ',
+                image: 'https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&w=600&q=80',
+                description: 'Lẵng hoa chúc mừng khai trương sang trọng với tone đỏ cam chủ đạo tượng trưng cho sự thành công và phát tài.',
+                isBestseller: true,
+                rating: 5
+            },
+            {
+                id: 'p4',
+                name: 'Tulip Hà Lan Trắng Tinh Khôi',
+                category: 'wedding',
+                type: 'tulip',
+                price: 950000,
+                priceFormatted: '950.000đ',
+                image: 'https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&w=600&q=80',
+                description: 'Bó hoa Tulip trắng nhập khẩu nguyên hoa nguyên cành, nét tinh tế thanh thuần vượt thời gian.',
+                isBestseller: true,
+                rating: 4.8
+            },
+            {
+                id: 'p5',
+                name: 'Mơ Màng Cẩm Tú Cầu',
+                category: 'event',
+                type: 'baby',
+                price: 520000,
+                priceFormatted: '520.000đ',
+                image: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80',
+                description: 'Cẩm tú cầu xanh mút cùng hoa Baby bồng bềnh như làn mây, mang vẻ đẹp nhẹ nhàng bình yên.',
+                isBestseller: false,
+                rating: 4.9
+            },
+            {
+                id: 'p6',
+                name: 'Hồng Đỏ Juliet Hoàng Gia',
+                category: 'birthday',
+                type: 'rose',
+                price: 890000,
+                priceFormatted: '890.000đ',
+                image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80',
+                description: 'Bó hồng đỏ nhung rực rỡ tượng trưng cho tình yêu mãnh liệt, quyến rũ và nồng nàn.',
+                isBestseller: false,
+                rating: 5
+            }
+        ];
+
+        // State Management
+        let cart = [];
+        let currentQuickViewProduct = null;
+        let quickViewQuantity = 1;
+
+        // ----------------------------------------------------
+        // 2. PAGE NAVIGATION SYSTEM (SPA)
+        // ----------------------------------------------------
+        function navigateTo(pageId) {
+            // Hide all pages
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            // Show selected page
+            const targetSection = document.getElementById(`page-${pageId}`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Update Navigation Menu Styling
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('text-brand-darkrose', 'border-brand-darkrose');
+                link.classList.add('text-gray-600', 'border-transparent');
+            });
+
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-brand-darkrose', 'border-brand-darkrose');
+                activeNav.classList.remove('text-gray-600', 'border-transparent');
+            }
+
+            // Scroll to Top Smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ----------------------------------------------------
+        // 3. PRODUCT RENDERING & FILTERING LOGIC
+        // ----------------------------------------------------
+        function renderHomeBestSellers() {
+            const container = document.getElementById('home-bestseller-grid');
+            if (!container) return;
+
+            const bestSellers = productsData.filter(p => p.isBestseller);
+            container.innerHTML = bestSellers.map(product => `
+                <div class="product-card bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-lg transition duration-300 flex flex-col justify-between">
+                    <div class="relative overflow-hidden group">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-brand-rose text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">Bán Chạy</span>
+                        <div class="product-actions absolute inset-0 bg-black/20 opacity-0 transition duration-300 flex items-center justify-center gap-3">
+                            <button onclick="openQuickView('${product.id}')" class="w-10 h-10 bg-white text-gray-800 rounded-full flex items-center justify-center hover:bg-brand-rose hover:text-white transition shadow-md" title="Xem Nhanh">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="addToCart('${product.id}')" class="w-10 h-10 bg-brand-darkrose text-white rounded-full flex items-center justify-center hover:bg-pink-700 transition shadow-md" title="Thêm Vào Giỏ">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+                                <span>${getCategoryName(product.category)}</span>
+                                <span class="text-amber-400">★ ${product.rating}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-gray-800 text-lg hover:text-brand-darkrose transition cursor-pointer" onclick="openQuickView('${product.id}')">${product.name}</h3>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between pt-3 border-t border-pink-50">
+                            <span class="font-serif font-bold text-brand-darkrose text-lg">${product.priceFormatted}</span>
+                            <button onclick="addToCart('${product.id}')" class="px-3.5 py-1.5 bg-brand-pink hover:bg-brand-rose hover:text-white text-brand-darkrose font-medium text-xs rounded-full transition">
+                                + Giỏ Hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts() {
+            const catFilter = document.querySelector('input[name="cat-filter"]:checked')?.value || 'all';
+            const priceFilter = document.getElementById('price-range-select')?.value || 'all';
+            const sortFilter = document.getElementById('sort-select')?.value || 'default';
+            const selectedTypes = Array.from(document.querySelectorAll('.type-checkbox:checked')).map(cb => cb.value);
+
+            let filtered = [...productsData];
+
+            // Filter Category
+            if (catFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === catFilter);
+            }
+
+            // Filter Types
+            if (selectedTypes.length > 0) {
+                filtered = filtered.filter(p => selectedTypes.includes(p.type));
+            }
+
+            // Filter Price
+            if (priceFilter === 'under500') {
+                filtered = filtered.filter(p => p.price < 500000);
+            } else if (priceFilter === '500to1000') {
+                filtered = filtered.filter(p => p.price >= 500000 && p.price <= 1000000);
+            } else if (priceFilter === 'over1000') {
+                filtered = filtered.filter(p => p.price > 1000000);
+            }
+
+            // Sort
+            if (sortFilter === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortFilter === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortFilter === 'name-asc') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            renderCatalogProducts(filtered);
+        }
+
+        function renderCatalogProducts(products) {
+            const container = document.getElementById('products-catalog-grid');
+            const countEl = document.getElementById('product-count');
+            const noProductsEl = document.getElementById('no-products-found');
+
+            if (!container) return;
+
+            countEl.textContent = products.length;
+
+            if (products.length === 0) {
+                container.innerHTML = '';
+                noProductsEl.classList.remove('hidden');
+                return;
+            }
+
+            noProductsEl.classList.add('hidden');
+            container.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-2xl overflow-hidden border border-pink-100 shadow-sm hover:shadow-lg transition duration-300 flex flex-col justify-between">
+                    <div class="relative overflow-hidden group">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                        <div class="product-actions absolute inset-0 bg-black/20 opacity-0 transition duration-300 flex items-center justify-center gap-3">
+                            <button onclick="openQuickView('${product.id}')" class="w-10 h-10 bg-white text-gray-800 rounded-full flex items-center justify-center hover:bg-brand-rose hover:text-white transition shadow-md">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button onclick="addToCart('${product.id}')" class="w-10 h-10 bg-brand-darkrose text-white rounded-full flex items-center justify-center hover:bg-pink-700 transition shadow-md">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+                                <span>${getCategoryName(product.category)}</span>
+                                <span class="text-amber-400">★ ${product.rating}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-gray-800 text-base hover:text-brand-darkrose transition cursor-pointer" onclick="openQuickView('${product.id}')">${product.name}</h3>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between pt-3 border-t border-pink-50">
+                            <span class="font-serif font-bold text-brand-darkrose text-base">${product.priceFormatted}</span>
+                            <button onclick="addToCart('${product.id}')" class="px-3 py-1.5 bg-brand-pink hover:bg-brand-rose hover:text-white text-brand-darkrose font-medium text-xs rounded-full transition">
+                                + Giỏ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function resetFilters() {
+            document.querySelectorAll('input[name="cat-filter"]')[0].checked = true;
+            document.querySelectorAll('.type-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('price-range-select').value = 'all';
+            document.getElementById('sort-select').value = 'default';
+            filterProducts();
+        }
+
+        function filterCategoryAndNavigate(category) {
+            navigateTo('products');
+            const radio = document.querySelector(`input[name="cat-filter"][value="${category}"]`);
+            if (radio) {
+                radio.checked = true;
+                filterProducts();
+            }
+        }
+
+        function getCategoryName(catKey) {
+            const map = {
+                'birthday': 'Hoa Sinh Nhật',
+                'wedding': 'Hoa Cưới / Tình Yêu',
+                'opening': 'Hoa Khai Trương',
+                'event': 'Hoa Sự Kiện'
+            };
+            return map[catKey] || 'Hoa Tươi';
+        }
+
+        // Global Search Execution
+        function handleGlobalSearch(event) {
+            if (event.key === 'Enter') {
+                executeGlobalSearch();
+            }
+        }
+
+        function executeGlobalSearch() {
+            const desktopQuery = document.getElementById('global-search-input').value.trim();
+            const mobileQuery = document.getElementById('mobile-search-input').value.trim();
+            const query = (desktopQuery || mobileQuery).toLowerCase();
+
+            if (!query) return;
+
+            navigateTo('products');
+            const searchResults = productsData.filter(p => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query));
+            renderCatalogProducts(searchResults);
+            showToast(`Tìm kiếm: "${query}" (${searchResults.length} kết quả)`);
+        }
+
+        // ----------------------------------------------------
+        // 4. CART & DRAWER FUNCTIONALITY
+        // ----------------------------------------------------
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-drawer-overlay');
+            
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function addToCart(productId, qty = 1) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = cart.findIndex(item => item.id === productId);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += qty;
+            } else {
+                cart.push({ ...product, quantity: qty });
+            }
+
+            updateCartUI();
+            showToast(`Đã thêm "${product.name}" vào giỏ!`);
+        }
+
+        function updateCartQuantity(productId, change) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+            showToast('Đã xóa sản phẩm khỏi giỏ');
+        }
+
+        function updateCartUI() {
+            // Update Badge Count
+            const totalQty = cart.reduce((sum, i) => sum + i.quantity, 0);
+            document.getElementById('cart-badge').textContent = totalQty;
+
+            // Render Items
+            const container = document.getElementById('cart-items-container');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-pink-200"></i>
+                        <p class="text-sm">Giỏ hàng của bạn chưa có sản phẩm nào</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-3 p-3 bg-white rounded-2xl border border-pink-100 shadow-sm">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl flex-shrink-0">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-sm text-gray-800 line-clamp-1">${item.name}</h4>
+                            <p class="text-brand-darkrose text-xs font-semibold mt-0.5">${item.priceFormatted}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="updateCartQuantity('${item.id}', -1)" class="w-6 h-6 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center text-xs hover:bg-brand-rose hover:text-white">-</button>
+                                <span class="text-xs font-bold text-gray-700">${item.quantity}</span>
+                                <button onclick="updateCartQuantity('${item.id}', 1)" class="w-6 h-6 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center text-xs hover:bg-brand-rose hover:text-white">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-gray-300 hover:text-red-500 text-sm p-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Update Total Price
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cart-total-price').textContent = totalPrice.toLocaleString('vi-VN') + 'đ';
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                showToast('Giỏ hàng trống! Vui lòng chọn hoa trước.', 'warning');
+                return;
+            }
+            alert('Cảm ơn bạn đã đặt hàng! Nhân viên Floral Elegance sẽ liên hệ xác nhận trong 5 phút.');
+            cart = [];
+            updateCartUI();
+            toggleCartDrawer();
+        }
+
+        // ----------------------------------------------------
+        // 5. QUICK VIEW MODAL SYSTEM
+        // ----------------------------------------------------
+        function openQuickView(productId) {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            currentQuickViewProduct = product;
+            quickViewQuantity = 1;
+
+            const modalContent = document.getElementById('quickview-content');
+            modalContent.innerHTML = `
+                <div class="h-64 md:h-full relative">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 md:p-8 flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs text-brand-darkrose font-semibold uppercase tracking-wider">${getCategoryName(product.category)}</span>
+                        <h2 class="font-serif font-bold text-2xl text-gray-900 mt-1">${product.name}</h2>
+                        <div class="text-amber-400 text-xs mt-1">★ ${product.rating} (Đánh giá từ khách hàng)</div>
+                        <p class="font-serif font-bold text-brand-darkrose text-2xl mt-3">${product.priceFormatted}</p>
+                        <p class="text-gray-600 text-sm mt-3 leading-relaxed">${product.description}</p>
+                    </div>
+
+                    <div class="space-y-4 pt-4 border-t border-pink-100">
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm font-medium text-gray-700">Số lượng:</span>
+                            <div class="flex items-center border border-pink-200 rounded-full bg-brand-cream">
+                                <button onclick="adjustQuickViewQty(-1)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brand-darkrose">-</button>
+                                <span id="quickview-qty" class="w-8 text-center text-sm font-bold text-gray-800">1</span>
+                                <button onclick="adjustQuickViewQty(1)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brand-darkrose">+</button>
+                            </div>
+                        </div>
+
+                        <button onclick="addQuickViewToCart()" class="w-full py-3 bg-brand-darkrose text-white font-medium rounded-xl hover:bg-pink-700 transition shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-basket-shopping"></i> Thêm Vào Giỏ Hàng
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quickview-modal').classList.remove('hidden');
+        }
+
+        function adjustQuickViewQty(change) {
+            quickViewQuantity = Math.max(1, quickViewQuantity + change);
+            const qtyEl = document.getElementById('quickview-qty');
+            if (qtyEl) qtyEl.textContent = quickViewQuantity;
+        }
+
+        function addQuickViewToCart() {
+            if (currentQuickViewProduct) {
+                addToCart(currentQuickViewProduct.id, quickViewQuantity);
+                closeQuickView();
+            }
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickview-modal').classList.add('hidden');
+        }
+
+        // ----------------------------------------------------
+        // 6. UTILITY TOAST NOTIFICATIONS
+        // ----------------------------------------------------
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `bg-gray-900/90 text-white text-xs font-medium px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2 backdrop-blur-md border border-white/10 transition-all duration-300 opacity-0 transform translate-y-2`;
+            
+            const icon = type === 'warning' ? 'fa-triangle-exclamation text-amber-400' : 'fa-circle-check text-emerald-400';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-2');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Form Handlers
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            showToast('Yêu cầu liên hệ của bạn đã được gửi thành công!');
+            event.target.reset();
+        }
+
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            showToast('Cảm ơn bạn đã đăng ký nhận thông tin!');
+            event.target.reset();
+        }
+
+        // ----------------------------------------------------
+        // 7. INITIALIZATION ON WINDOW LOAD
+        // ----------------------------------------------------
+        window.onload = function () {
+            renderHomeBestSellers();
+            filterProducts();
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>
